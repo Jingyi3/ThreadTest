@@ -1,0 +1,54 @@
+---------------------------高并发1---------------------------
+【synchronized】
+1. synchronized锁定的是【对象】
+2. synchronized加在一个方法申明上面的时候锁定的是【this】当前对象
+3. synchronized加在一个static方法的时候锁定的是【类.class】对象
+4. 如果使用synchronized的方法加锁，当出现异常，java虚拟机会自动帮你释放锁
+5. 将synchronized的代码块尽量缩小，可以使锁效率更高
+6. synchronized 是不公平锁：不一定等的最久的就会进去
+
+【同步的方法和非同步的方法是否可以同时调用？】
+--可以，同步的方法需要锁，非同步的方法并不需要锁，不需要锁就不冲突
+
+【一个同步方法可以调用另外一个同步方法，子类的同步方法也可以调父类的同步方法】
+
+【脏读问题dirtyRead】
+对业务写方法加锁，对业务读方法不加锁-->造成在读的时候，会读到你还没有写完的数据
+解决：CopyOnWrite 牺牲写性能增加读性能
+
+【volatile关键字】
+每一个线程在读取主内存的数据的时候会在自己的线程缓存中留一份，合适的时候会写回去。
+当没有写回去的时候，你访问的内容，很可能两个线程改了的内容互相不可见。
+1. 加上volatile的话，当你写到主内存之后，他会通知其他线程的缓存你的数据已经过期了，马上刷新，这样保证了线程的可见性。
+2. volatile不能替代synchronized 因为v只解决了可见性，没有解决原子性。
+
+【AtomicXXX】
+比较简单的自增自减，想要使其变为原子性操作可以使用AtomicXXX
+
+【锁是否有变更】
+1. 如果锁的对象的属性发生了变化，不影响锁的使用
+2. 如果锁把这个引用指向了新的对象，那么这个锁就变了
+3. 所以锁是锁在堆空间里，锁的是对象；而不是在栈空间里的引用
+4. 在锁里面不要使用【字符串常量】作为锁定的对象，不小心就会产生死锁的问题
+
+【两个线程之间互相通信】
+1. wait/notify
+   1）wait释放锁；notify不释放锁，如果想要释放锁需要在notify之后再wait释放当前的锁
+   2）必须要在synchronized当中使用，首先锁定。
+2. 同步器【CountDownLatch/cyclicbarrier/semaphore】
+   1） CountDownLatch 门闩 当初始值==0的时候，门闩就开了
+
+---------------------------高并发2---------------------------
+【高并发的四大问题】
+1. 同步器 synchronizer --线程之间的同步和tongxin
+2. 同步性容器 concurrentMap/concurrentList/copyOnWrite/bolckInQueue
+3. 线程池 ThreadPool/executor/future/collllllable
+4.
+
+【Reentrantlock】
+1. 可以替代synchronized
+2. 比syn灵活
+   1）可以用tryLock尝试锁定，根据锁定的结果，还可以指定的额时间，来处理
+   2）lockInterruptibly 可以通过lock.interrupt来打断我
+3. 是公平锁：谁等的时间长，谁就会得到这把锁
+4. 区别：

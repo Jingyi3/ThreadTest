@@ -1,4 +1,4 @@
-package p18;
+package stopAtFive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,6 @@ public class MyContainer1 {
             }
             System.out.println("t2 结束");
         },"t2").start();
-
 
     }
 }
