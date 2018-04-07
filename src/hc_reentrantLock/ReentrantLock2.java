@@ -1,4 +1,4 @@
-package p19;
+package hc_reentrantLock;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;

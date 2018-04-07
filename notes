@@ -52,3 +52,8 @@
    2）lockInterruptibly 可以通过lock.interrupt来打断我
 3. 是公平锁：谁等的时间长，谁就会得到这把锁
 4. 区别：
+
+【生产者消费者模型】
+1. get和out方法都需要使用【while】来判断【满/空】
+2. 注意【wait】99.9%的情况下，都需要用while！！！
+3. lock-await-signal; synchronized-wait-notify
