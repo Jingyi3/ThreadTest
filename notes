@@ -56,4 +56,9 @@
 【生产者消费者模型】
 1. get和out方法都需要使用【while】来判断【满/空】
 2. 注意【wait】99.9%的情况下，都需要用while！！！
-3. lock-await-signal; synchronized-wait-notify
+3. synchronized-wait-notify[汇编式的写法需要精确控制才可以]
+4. lock-await-signal[在不同的condition情况下，精确的让某些线程睡着，让某些线程醒来];
+
+【ThreadLocal 局部变量】
+1. 某一个线程里面自己的变量set的东西别的线程用不着；get的东西是自己线程的东西不会和其他线程混在一起
+2. 在很多的框架中都会用到
