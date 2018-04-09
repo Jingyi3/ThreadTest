@@ -36,7 +36,7 @@
    1）wait释放锁；notify不释放锁，如果想要释放锁需要在notify之后再wait释放当前的锁
    2）必须要在synchronized当中使用，首先锁定。
 2. 同步器【CountDownLatch/cyclicbarrier/semaphore】
-   1） CountDownLatch 门闩 当初始值==0的时候，门闩就开了
+   1） 【CountDownLatch】 门闩 当初始值==0的时候，门闩就开了
 
 ---------------------------高并发2---------------------------
 【高并发的四大问题】
@@ -44,6 +44,12 @@
 2. 同步性容器 concurrentMap/concurrentList/copyOnWrite/bolckInQueue
 3. 线程池 ThreadPool/executor/future/collllllable
 4.
+
+
+【Thread实现方法】
+1. 继承Thread类
+2. 实现Runnable接口
+3. 实现Callable接口
 
 【Reentrantlock】
 1. 可以替代synchronized
@@ -62,3 +68,20 @@
 【ThreadLocal 局部变量】
 1. 某一个线程里面自己的变量set的东西别的线程用不着；get的东西是自己线程的东西不会和其他线程混在一起
 2. 在很多的框架中都会用到
+
+集群使用分布式锁（有6、7种实现方法）
+
+数据库的高并发
+关系型
+建立一个索引/分库/分点/读写分离/主从结构
+
+---------------------------高并发3---------------------------
+【并发容器】
+
+
+---------------------------高并发4---------------------------
+【线程池框架】
+
+---------------------------高并发5---------------------------
+【disruptor】
+【netty】
