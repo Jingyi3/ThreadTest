@@ -78,7 +78,23 @@
 ---------------------------高并发3---------------------------
 【并发容器】
 
+【Map】
+1. set只包括key，map包括key-value
+2. 不加锁：hashMap/TreeMap/LinkedSortedMap/linkedHashMap
+3. 加锁：hashTable(用的非常少了)；
+   不是非常高并发的情况下可以使用：Collections.synchronizedXXX
+   输入一个不加锁的容器，通过这个方法对这个容器进行包装，将其中的所有方法都加锁，返回一个加锁的容器
+4. 如果需要并发性比较高：concurrentHashMap
+   如果需要并发性比较高并且需要排序：concurrentSkipListMap
 
+【Copy On Write】
+写时复制 copy on write
+多线程环境下 写时效率低 读时效率高
+适合写少读多的环境
+读的时候不需要加锁
+
+
+注：scala kotlin都是基于jvm的
 ---------------------------高并发4---------------------------
 【线程池框架】
 
