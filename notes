@@ -80,31 +80,32 @@
 
 【Map/Set】
 1. set只包括key，map包括key-value
-2. 不加锁：hashMap/TreeMap/LinkedSortedMap/linkedHashMap -- 不需要使用线程的情况系
+2. 不加锁：【hashMap/TreeMap红黑树/LinkedSortedMap/linkedHashMap】 -- 不需要使用线程的情况系
 3. 加锁：hashTable(用的非常少了)；
    不是非常高并发的情况下可以使用：Collections.synchronizedXXX
    输入一个不加锁的容器，通过这个方法对这个容器进行包装，将其中的所有方法都加锁，返回一个加锁的容器
 4. 如果需要并发性比较高：concurrentHashMap
    如果需要并发性比较高并且需要排序：concurrentSkipListMap
 
-【Copy On Write】
-写时复制 copy on write
-多线程环境下 写时效率低 读时效率高
-适合写非常少，读特别多的环境
-读的时候不需要加锁（因为不会出现脏读的情况）
+
 
 【Queue】
 1. 在不使用线程的情况下：ArrayList/LinkedList
 2. 低并发的情况下Collections.synchronizedXXX
 【Queue在高并发编程中有两种】
-1. ConcurrentLinkedQueue == 内部加锁的队列
-2. BlockingQueue == 阻塞式队列
+1. ConcurrentLinkedQueue == 内部加锁的队列//////没有concurrentArrayQUeue
+2. BlockingQueue == 【阻塞式队列】以下都是
         LinkedBolcking 无界队列
         ArrayBlockingQueue 有界队列
         TransferQueue 直接把生产者的任务交给消费者执行，如果没有消费者执行的恶化他就阻塞（游戏服务器转发消息的时候）
         SynchronousQueue 一种特殊的transferqueue 容量为0
     生产者-消费者，得一直等着
 3. DelayQueue 执行定时任务：两个小时之后关机/给出一个警告
+4. 【Copy On Write】
+   写时复制 copy on write
+   多线程环境下 写时效率低 读时效率高
+   适合写非常少，读特别多的环境
+   读的时候不需要加锁（因为不会出现脏读的情况）
 
 
 并发队列 是加锁不阻塞
@@ -112,6 +113,79 @@
 注：scala kotlin都是基于jvm的
 ---------------------------高并发4---------------------------
 【线程池框架】
+
+【Executor执行器--接口】
+1. 用来执行某一个任务 只有一个方法execute
+【ExecutorService】
+1. 在Executor下面有继承出来了一个接口叫做【ExecutorService】
+2. 服务 -- 是一些后台的线程，都在跑着，作为服务运行在那里
+   一堆服务仍在那里，一堆执行器在那里等着，等着你网里面扔任务
+3. 除了execute方法还有submit方法，任务的类型有Runnable和Callable
+
+【Runnable 和 Callable】
+1. Runnable 里面有一个run方法--这个任务真正运行的时候是一个run方法
+   run方法没有返回值
+   run方法不能够抛出一个异常
+2. Callable 里面有一个call方法-- 这个任务真正运行的时候是一个call方法
+   call方法有一个返回值 是一个泛型 可以自己进行定义
+
+【Executors -- 是一个工具类】
+Collections 是一个操作集合的工具类
+Arrays 是一个操作数组的工具类
+Executors 是一个操作执行器的工具类
+
+【ExecutorService】
+
+=============【固定个数的】Fixed
+【ThreadPool】
+一个线程池维护者两个队列
+1. 一个任务列表
+2. 结束的任务队列 completedTask
+
+【Future】
+1.
+
+【ParallelComputing】并行计算
+nasa让全世界的计算机帮她运行切成的一小片一小片任务
+
+================【CachedPool】
+几万个线程起到不能起了
+60s aliveTime 生存周期
+不能超过最大int
+
+【CachedPool】
+【弹性大】
+
+=================【SingleThreadPool】
+线程池里就一个线程，保证任务是顺序执行的
+
+=================【ScheduledPool】
+
+delayedQueue 定时执行，
+计划中的【定时任务】，线程可以复用
+scheduledExecutorService
+scheduledAtFixedRate 以固定的频率执行某个任务
+四个参数：runnable，initialDelay 第一个热舞开始之前需要多少时间
+         period每隔多长时间执行，时间单位
+
+=================【WorkStealingPool】【ForkJoinPool】
+【WorkStealingPool】
+工作窃取
+每隔线程都执行自己的队列
+一个线程执行完了自己去偷任务执行
+
+由于产生的是所有线程daemon精灵线程（守护线程，后台线程），主线程（虚拟机）不阻塞的话，看不到输出
+实际上是ForkJoinPool实现的
+
+【ForkJoinPool】
+fork join 分叉和合并
+map reduce
+
+recursiveAction
+recursiveTask
+【ThreadPoolExecutor】
+
+【ParallelStreamAPI】
 
 ---------------------------高并发5---------------------------
 【disruptor】
