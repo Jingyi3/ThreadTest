@@ -78,9 +78,9 @@
 ---------------------------高并发3---------------------------
 【并发容器】
 
-【Map】
+【Map/Set】
 1. set只包括key，map包括key-value
-2. 不加锁：hashMap/TreeMap/LinkedSortedMap/linkedHashMap
+2. 不加锁：hashMap/TreeMap/LinkedSortedMap/linkedHashMap -- 不需要使用线程的情况系
 3. 加锁：hashTable(用的非常少了)；
    不是非常高并发的情况下可以使用：Collections.synchronizedXXX
    输入一个不加锁的容器，通过这个方法对这个容器进行包装，将其中的所有方法都加锁，返回一个加锁的容器
@@ -90,10 +90,25 @@
 【Copy On Write】
 写时复制 copy on write
 多线程环境下 写时效率低 读时效率高
-适合写少读多的环境
-读的时候不需要加锁
+适合写非常少，读特别多的环境
+读的时候不需要加锁（因为不会出现脏读的情况）
+
+【Queue】
+1. 在不使用线程的情况下：ArrayList/LinkedList
+2. 低并发的情况下Collections.synchronizedXXX
+【Queue在高并发编程中有两种】
+1. ConcurrentLinkedQueue == 内部加锁的队列
+2. BlockingQueue == 阻塞式队列
+        LinkedBolcking 无界队列
+        ArrayBlockingQueue 有界队列
+        TransferQueue 直接把生产者的任务交给消费者执行，如果没有消费者执行的恶化他就阻塞（游戏服务器转发消息的时候）
+        SynchronousQueue 一种特殊的transferqueue 容量为0
+    生产者-消费者，得一直等着
+3. DelayQueue 执行定时任务：两个小时之后关机/给出一个警告
 
 
+并发队列 是加锁不阻塞
+阻塞队列是阻塞
 注：scala kotlin都是基于jvm的
 ---------------------------高并发4---------------------------
 【线程池框架】
