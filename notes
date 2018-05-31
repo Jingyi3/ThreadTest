@@ -40,7 +40,7 @@
 
 ---------------------------高并发2---------------------------
 【高并发的四大问题】
-1. 同步器 synchronizer --线程之间的同步和tongxin
+1. 同步器 synchronizer -- 线程之间的同步和tongxin
 2. 同步性容器 concurrentMap/concurrentList/copyOnWrite/bolckInQueue
 3. 线程池 ThreadPool/executor/future/collllllable
 4.
@@ -66,6 +66,13 @@
 4. lock-await-signal[在不同的condition情况下，精确的让某些线程睡着，让某些线程醒来];
 
 【ThreadLocal 局部变量】
+ * ThreadLocal 局部变量
+ * 每个线程在自己的空间都有自己的对象，相当于都拷贝了一份
+ * 在效率上更高
+ * 如果自己改变 自己维护 不需要通知其他线程那么就是用ThreadLocal
+ *
+ * ThreadLocal是使用空间换时间，synchronized是使用时间换空间
+ * 比如框架中hibernate中session就存在于与ThreadLocal中，避免synchronized的使用
 1. 某一个线程里面自己的变量set的东西别的线程用不着；get的东西是自己线程的东西不会和其他线程混在一起
 2. 在很多的框架中都会用到
 
@@ -80,7 +87,7 @@
 
 【Map/Set】
 1. set只包括key，map包括key-value
-2. 不加锁：【hashMap/TreeMap红黑树/LinkedSortedMap/linkedHashMap】 -- 不需要使用线程的情况系
+2. 不加锁：【hashMap/TreeMap红黑树-排好顺序的/LinkedSortedMap/linkedHashMap】 -- 不需要使用线程的情况系
 3. 加锁：hashTable(用的非常少了)；
    不是非常高并发的情况下可以使用：Collections.synchronizedXXX
    输入一个不加锁的容器，通过这个方法对这个容器进行包装，将其中的所有方法都加锁，返回一个加锁的容器
@@ -93,11 +100,11 @@
 1. 在不使用线程的情况下：ArrayList/LinkedList
 2. 低并发的情况下Collections.synchronizedXXX
 【Queue在高并发编程中有两种】
-1. ConcurrentLinkedQueue == 内部加锁的队列//////没有concurrentArrayQUeue
+1. ConcurrentLinkedQueue == 内部加锁的队列//////没有concurrentArrayQUeue    非阻塞的队列
 2. BlockingQueue == 【阻塞式队列】以下都是
         LinkedBolcking 无界队列
         ArrayBlockingQueue 有界队列
-        TransferQueue 直接把生产者的任务交给消费者执行，如果没有消费者执行的恶化他就阻塞（游戏服务器转发消息的时候）
+        TransferQueue 直接把生产者的任务交给消费者执行，如果没有消费者执行的话他就阻塞（游戏服务器转发消息的时候）
         SynchronousQueue 一种特殊的transferqueue 容量为0
     生产者-消费者，得一直等着
 3. DelayQueue 执行定时任务：两个小时之后关机/给出一个警告
@@ -115,14 +122,16 @@
 【线程池框架】
 
 【Executor执行器--接口】
-1. 用来执行某一个任务 只有一个方法execute
+1. 用来执行某一个任务 只有一个方法execute 任务是runnable
+
 【ExecutorService】
 1. 在Executor下面有继承出来了一个接口叫做【ExecutorService】
 2. 服务 -- 是一些后台的线程，都在跑着，作为服务运行在那里
    一堆服务仍在那里，一堆执行器在那里等着，等着你网里面扔任务
-3. 除了execute方法还有submit方法，任务的类型有Runnable和Callable
+3. 除了execute方法还有submit方法，任务的类型有Runnable和Callable（可以被call的任务）
 
 【Runnable 和 Callable】
+都是被另外一个线程调用的
 1. Runnable 里面有一个run方法--这个任务真正运行的时候是一个run方法
    run方法没有返回值
    run方法不能够抛出一个异常
@@ -138,6 +147,15 @@ Executors 是一个操作执行器的工具类
 
 =============【固定个数的】Fixed
 【ThreadPool】
+线程池就是一堆线程，装在某个容器里，等着你来运行的
+ * java的所有线程池都实现了ExecutorService的接口
+ * 可以执行任务
+ * 线程池中的线程在执行完任务之后不会消失，一直在这个池子里，
+ * 这个线程应停下来了，如果有新的任务来直接用这个线程不需要新启动线程
+ * 效率高 并发性比较好
+ * 启动和关闭线程会消耗系统资源的
+
+
 一个线程池维护者两个队列
 1. 一个任务列表
 2. 结束的任务队列 completedTask
@@ -183,10 +201,20 @@ map reduce
 
 recursiveAction
 recursiveTask
+
 【ThreadPoolExecutor】
+基本上的底层都是这个，自己定义线程池
+参数：起始线程多少个，最大线程数多少，存活时间多长，使用同步队列
+
+
 
 【ParallelStreamAPI】
+默认使用多线程
 
+
+六种线程池
+【FixedThreadPool】【CachedPool】【SingleThreadPool】【ScheduledPool】【WorkStealingPool】【ForkJoinPool】
+底层由ThreadPoolExecutor实现
 ---------------------------高并发5---------------------------
 【disruptor】
 【netty】

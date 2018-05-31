@@ -10,7 +10,8 @@ import java.util.concurrent.TimeUnit;
  * 使用volatile关键字，会让所有线程都读到变量的修改至
  * <p>
  * 在下面的diamante中，running是存在于堆内存的t对象中
- * 当线程t1 开始运行的时候，会把running值从内存中读到t1 线程的工作区，在运行的过程中直接使用中合格copy，并不会每次都会去读堆内存，这样当主线程修改running的值之后，t1线程感知不到，搜易不会停止运行
+ * 当线程t1 开始运行的时候，会把running值从内存中读到t1 线程的工作区，在运行的过程中直接使用中合格copy，
+ * 并不会每次都会去读堆内存，这样当主线程修改running的值之后，t1线程感知不到，搜易不会停止运行
  * <p>
  * 使用volatile，将会强制所有的线程都去堆内存中堆区running的zhi
  * <p>
